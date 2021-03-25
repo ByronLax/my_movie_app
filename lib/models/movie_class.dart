@@ -26,3 +26,14 @@ class MovieCasts {
     this.characterName,
   });
 }
+
+class ReviewsClass {
+  final String author;
+  final String authorImage;
+  final String reviewContent;
+  ReviewsClass({
+    this.author,
+    this.authorImage,
+    this.reviewContent,
+  });
+}

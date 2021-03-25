@@ -11,21 +11,32 @@ class PageViewWidget extends StatelessWidget {
         Provider.of<MoviesProvider>(context).getTrendMoviesList;
     var size = MediaQuery.of(context).size;
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
       height: size.height * .26,
+      width: size.width * 1,
       child: FutureBuilder(
-        future: Provider.of<MoviesProvider>(context).getNowPlayingMovies(),
+        future: Provider.of<MoviesProvider>(context).getTrendingMovies(),
         builder: (context, snapshot) => PageView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {},
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: kWidgetOnEmptyColor,
-              ),
-              child: Image.network(
-                '$kTMDBPoster${movies[index].poster}',
-                fit: BoxFit.fill,
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: kWidgetOnEmptyColor,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    '$kTMDBPoster${movies[index].poster}',
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           ),

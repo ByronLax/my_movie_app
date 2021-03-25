@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/widgets/movie_cast_widget.dart';
+import 'package:my_movie_app/widgets/review_widget.dart';
 import '../constants.dart';
 
 class MovieDetailWidget extends StatelessWidget {
-  final int id;
+  final int movieID;
   final String description;
   final double rating;
   final String imageUrl;
   final String poster;
   final String title;
   MovieDetailWidget({
-    this.id,
+    this.movieID,
     this.poster,
     this.imageUrl,
     this.description,
@@ -85,8 +86,9 @@ class MovieDetailWidget extends StatelessWidget {
             ),
           ),
           MovieCastWidget(
-            id: id,
+            movieID: movieID,
           ),
+          ReviewsWidget(movieID),
         ],
       ),
     );

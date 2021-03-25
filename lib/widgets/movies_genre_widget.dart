@@ -1,38 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/constants.dart';
+import 'package:my_movie_app/models/movie_class.dart';
+import 'package:my_movie_app/networking/networking.dart';
 import 'package:my_movie_app/widgets/movie_column_tab%20widget.dart';
+import 'package:my_movie_app/widgets/trending_movies_widget.dart';
 import 'package:provider/provider.dart';
 import '../Providers/movie_provider.dart';
 
-class MovieGenreWidgets extends StatelessWidget {
+class MovieGenreWidgets extends StatefulWidget {
+  @override
+  _MovieGenreWidgetsState createState() => _MovieGenreWidgetsState();
+}
+
+class _MovieGenreWidgetsState extends State<MovieGenreWidgets> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final moviesProvider = Provider.of<MoviesProvider>(context);
 
     return Container(
-      height: size.height * .65,
-      child: Consumer<MoviesProvider>(
-        builder: (context, moviesProvider, child) => ListView(
-          children: [
-            MovieColumnTabWidget(
-              typeNameText: '${moviesProvider.movieTypeNameList['trending']}',
-              future: moviesProvider.getTrendingMovies(),
-              itemCount: moviesProvider.getTrendMoviesList.length,
-              movieClassList: moviesProvider.getTrendMoviesList,
-            ),
-            MovieColumnTabWidget(
-              typeNameText: '${moviesProvider.movieTypeNameList['nowPlaying']}',
-              future: moviesProvider.getNowPlayingMovies(),
-              itemCount: moviesProvider.getNowMoviesList.length,
-              movieClassList: moviesProvider.getNowMoviesList,
-            ),
-            MovieColumnTabWidget(
-              typeNameText: '${moviesProvider.movieTypeNameList['topRated']}',
-              future: moviesProvider.getTopRatedMovies(),
-              itemCount: moviesProvider.getTopMoviesList.length,
-              movieClassList: moviesProvider.getTopMoviesList,
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          TrendingMoviesWidget(),
+          MovieColumnTabWidget(
+            typeNameText: 'Top Rated',
+            future: moviesProvider.getTopRatedMovies(),
+            itemCount: moviesProvider.getTopMoviesList.length,
+            movieClassList: moviesProvider.getTopMoviesList,
+          ),
+          MovieColumnTabWidget(
+            typeNameText: 'Popular',
+            future: moviesProvider.getPopularMovies(),
+            itemCount: moviesProvider.getPopularMoviesList.length,
+            movieClassList: moviesProvider.getPopularMoviesList,
+          ),
+          MovieColumnTabWidget(
+            typeNameText: 'Now Playing',
+            future: moviesProvider.getNowPLayingMovies(),
+            itemCount: moviesProvider.getNowPayingMoviesList.length,
+            movieClassList: moviesProvider.getNowPayingMoviesList,
+          ),
+          MovieColumnTabWidget(
+            typeNameText: 'UpComing',
+            future: moviesProvider.getUpComingMovies(),
+            itemCount: moviesProvider.getUpComingList.length,
+            movieClassList: moviesProvider.getUpComingList,
+          ),
+        ],
       ),
     );
   }

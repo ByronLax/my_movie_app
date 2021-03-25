@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/constants.dart';
-
 import '../widgets/movie_detail_widget.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -16,7 +15,10 @@ class MovieDetailScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            floating: true,
+            pinned: true,
             backgroundColor: kAccentColor,
+            title: Text('${movieClass['title']}'),
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -36,7 +38,7 @@ class MovieDetailScreen extends StatelessWidget {
                 (context, index) => MovieDetailWidget(
                       imageUrl: movieClass['imageUrl'],
                       title: movieClass['title'],
-                      id: movieClass['id'],
+                      movieID: movieClass['id'],
                       description: movieClass['description'],
                       rating: movieClass['rating'],
                       poster: movieClass['poster'],
