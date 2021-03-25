@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/models/movie_class.dart';
 import 'package:my_movie_app/screens/movie_details_screen.dart';
-
 import '../constants.dart';
 
 class MovieColumnTabWidget extends StatelessWidget {
@@ -40,7 +39,14 @@ class MovieColumnTabWidget extends StatelessWidget {
               builder: (context, snapshot) => InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, MovieDetailScreen.route,
-                      arguments: movieClassList[index].id);
+                      arguments: {
+                        'id': movieClassList[index].id,
+                        'imageUrl': movieClassList[index].imageURL,
+                        'rating': movieClassList[index].rating,
+                        'description': movieClassList[index].description,
+                        'poster': movieClassList[index].poster,
+                        'title': movieClassList[index].title,
+                      });
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: size.width * .003),
@@ -63,7 +69,7 @@ class MovieColumnTabWidget extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

@@ -15,3 +15,14 @@ class MovieClass {
     this.poster,
   });
 }
+
+class MovieCasts {
+  final String name;
+  final String profileImageUrl;
+  final String characterName;
+  MovieCasts({
+    this.name,
+    this.profileImageUrl,
+    this.characterName,
+  });
+}

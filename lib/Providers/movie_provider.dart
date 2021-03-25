@@ -32,54 +32,72 @@ class MoviesProvider extends ChangeNotifier {
   Future getTrendingMovies() async {
     final url = Uri.parse('$kTMDBMainUrl/3/trending/all/day?api_key=$kApiKey');
     final response = await http.get(url);
-    final decodedMoviesData = jsonDecode(response.body);
-    final resultMovies = decodedMoviesData['results'];
+    if (response.statusCode == 200) {
+      final decodedMoviesData = jsonDecode(response.body);
+      final resultMovies = decodedMoviesData['results'];
 
-    for (var movies in resultMovies) {
-      var movieTrendClass = MovieClass(
+      for (var movies in resultMovies) {
+        var movieTrendClass = MovieClass(
           id: movies['id'],
           title: movies['title'],
           imageURL: movies['poster_path'],
           description: movies['overview'],
           rating: movies['vote_average'],
-          poster: movies['backdrop_path']);
-      _moviesTrendList.add(movieTrendClass);
+          poster: movies['backdrop_path'],
+        );
+
+        _moviesTrendList.add(movieTrendClass);
+      }
+    } else {
+      print(response.statusCode);
     }
   }
 
   Future getNowPlayingMovies() async {
     final url = Uri.parse('$kTMDBMainUrl/3/movie/now_playing?api_key=$kApiKey');
     final response = await http.get(url);
-    final decodedMoviesData = jsonDecode(response.body);
-    final resultMovies = decodedMoviesData['results'];
+    if (response.statusCode == 200) {
+      final decodedMoviesData = jsonDecode(response.body);
+      final resultMovies = decodedMoviesData['results'];
 
-    for (var movies in resultMovies) {
-      var movieClass = MovieClass(
+      for (var movies in resultMovies) {
+        var movieTrendClass = MovieClass(
           id: movies['id'],
           title: movies['title'],
           imageURL: movies['poster_path'],
           description: movies['overview'],
           rating: movies['vote_average'],
-          poster: movies['backdrop_path']);
-      _moviesNowList.add(movieClass);
+          poster: movies['backdrop_path'],
+        );
+
+        _moviesNowList.add(movieTrendClass);
+      }
+    } else {
+      print(response.statusCode);
     }
   }
 
   Future getTopRatedMovies() async {
     final url = Uri.parse('$kTMDBMainUrl/3/movie/top_rated?api_key=$kApiKey');
     final response = await http.get(url);
-    final decodedMoviesData = jsonDecode(response.body);
-    final resultMovies = decodedMoviesData['results'];
+    if (response.statusCode == 200) {
+      final decodedMoviesData = jsonDecode(response.body);
+      final resultMovies = decodedMoviesData['results'];
 
-    for (var movies in resultMovies) {
-      var movieClass = MovieClass(
+      for (var movies in resultMovies) {
+        var movieClass = MovieClass(
           id: movies['id'],
           title: movies['title'],
           imageURL: movies['poster_path'],
           description: movies['overview'],
           rating: movies['vote_average'],
-          poster: movies['backdrop_path']);
-      _moviesTopList.add(movieClass);
+          poster: movies['backdrop_path'],
+          // movieCasts: await getMoviesCasts(movies['id']),
+        );
+        _moviesTopList.add(movieClass);
+      }
+    } else {
+      print(response.statusCode);
     }
   }
 }

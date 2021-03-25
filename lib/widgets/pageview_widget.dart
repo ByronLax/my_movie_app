@@ -25,7 +25,7 @@ class PageViewWidget extends StatelessWidget {
               ),
               child: Image.network(
                 '$kTMDBPoster${movies[index].poster}',
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ),

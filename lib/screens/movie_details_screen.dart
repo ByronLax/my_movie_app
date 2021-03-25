@@ -1,21 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/constants.dart';
-import 'package:my_movie_app/models/movie_class.dart' show MovieClass;
-import 'package:provider/provider.dart';
-import '../Providers/movie_provider.dart';
+
 import '../widgets/movie_detail_widget.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   static const route = 'MovieDetailScreen';
+
   @override
   Widget build(BuildContext context) {
-    final movieID = ModalRoute.of(context).settings.arguments;
-    final List<MovieClass> movies =
-        Provider.of<MoviesProvider>(context).getTrendMoviesList;
-    var movieIndex = movies.indexWhere((element) => element.id == movieID);
-
     var size = MediaQuery.of(context).size;
+    Map<String, Object> movieClass = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: CustomScrollView(
@@ -31,7 +26,7 @@ class MovieDetailScreen extends StatelessWidget {
             expandedHeight: size.height * .5,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.network(
-                '$kTMDBImages${movies[movieIndex].imageURL}',
+                '$kTMDBImages${movieClass['imageUrl']}',
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,7 +34,13 @@ class MovieDetailScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, index) => MovieDetailWidget(
-                    size: size, movies: movies, movieIndex: movieIndex),
+                      imageUrl: movieClass['imageUrl'],
+                      title: movieClass['title'],
+                      id: movieClass['id'],
+                      description: movieClass['description'],
+                      rating: movieClass['rating'],
+                      poster: movieClass['poster'],
+                    ),
                 childCount: 1),
           ),
         ],

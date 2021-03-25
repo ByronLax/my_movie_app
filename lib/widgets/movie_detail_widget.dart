@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:my_movie_app/models/movie_class.dart';
-
+import 'package:my_movie_app/widgets/movie_cast_widget.dart';
 import '../constants.dart';
 
 class MovieDetailWidget extends StatelessWidget {
-  const MovieDetailWidget({
-    Key key,
-    @required this.size,
-    @required this.movies,
-    @required this.movieIndex,
-  }) : super(key: key);
-
-  final Size size;
-  final List<MovieClass> movies;
-  final int movieIndex;
+  final int id;
+  final String description;
+  final double rating;
+  final String imageUrl;
+  final String poster;
+  final String title;
+  MovieDetailWidget({
+    this.id,
+    this.poster,
+    this.imageUrl,
+    this.description,
+    this.rating,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 1,
       child: Column(
@@ -28,9 +32,9 @@ class MovieDetailWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${movies[movieIndex].title}',
+                  title == null ? 'Not Available' : title,
                   overflow: TextOverflow.fade,
-                  style: TextStyle(fontSize: 25, color: kTextColor),
+                  style: TextStyle(fontSize: 20, color: kTextColor),
                 ),
                 IconButton(
                     icon: Icon(
@@ -49,7 +53,7 @@ class MovieDetailWidget extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  '${movies[movieIndex].rating}',
+                  '$rating',
                   style: TextStyle(fontSize: 20, color: kTextColor),
                 ),
                 Icon(
@@ -61,9 +65,7 @@ class MovieDetailWidget extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: kWidgetOnEmptyColor),
+            decoration: BoxDecoration(color: kWidgetOnEmptyColor),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,11 +78,14 @@ class MovieDetailWidget extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  '${movies[movieIndex].description}',
+                  '$description',
                   style: TextStyle(color: kTextColor, fontSize: 16),
                 ),
               ],
             ),
+          ),
+          MovieCastWidget(
+            id: id,
           ),
         ],
       ),

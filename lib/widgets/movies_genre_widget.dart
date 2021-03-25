@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_movie_app/screens/movie_details_screen.dart';
 import 'package:my_movie_app/widgets/movie_column_tab%20widget.dart';
 import 'package:provider/provider.dart';
-import '../constants.dart';
 import '../Providers/movie_provider.dart';
 
-class MovieGenreWidgets extends StatefulWidget {
-  @override
-  _MovieGenreWidgetsState createState() => _MovieGenreWidgetsState();
-}
-
-class _MovieGenreWidgetsState extends State<MovieGenreWidgets> {
+class MovieGenreWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
