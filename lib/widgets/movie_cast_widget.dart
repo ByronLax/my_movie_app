@@ -17,7 +17,7 @@ class _MovieCastWidgetState extends State<MovieCastWidget> {
   Future getMoviesCasts() async {
     List<MovieCasts> movieCastList = [];
     final url = Uri.parse(
-        'https://api.themoviedb.org/3/movie/${widget.movieID}/credits?api_key=134d65df73b3a736a094e603c5bb4825&language=en-US');
+        '$kTMDBMainUrl/3/movie/${widget.movieID}/credits?api_key=$kApiKey');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final decodedCastData = jsonDecode(response.body);
@@ -48,52 +48,58 @@ class _MovieCastWidgetState extends State<MovieCastWidget> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Casts',
-            style: TextStyle(color: kTextColor, fontSize: 20),
-            textAlign: TextAlign.start,
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: size.height * .005),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: kAccentColor),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * .02, vertical: size.height * .02),
+            child: Text(
+              'Casts',
+              style: kTypeNameStyle,
+              textAlign: TextAlign.start,
+            ),
           ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(color: kAccentColor),
-          width: size.width * 1,
-          height: size.height * .2,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _movieCastList.length,
-            itemBuilder: (context, index) => FutureBuilder(
-              future: getMoviesCasts(),
-              builder: (context, snapshot) => Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: kWidgetOnEmptyColor,
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          '$kTMDBImages${_movieCastList[index].profileImageUrl}'),
+          Container(
+            height: size.height * .2,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _movieCastList.length,
+              itemBuilder: (context, index) => FutureBuilder(
+                future: getMoviesCasts(),
+                builder: (context, snapshot) => Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: kWidgetOnEmptyColor,
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              '$kTMDBImages${_movieCastList[index].profileImageUrl}'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: size.height * .01),
+                          child: Text(
+                            '${_movieCastList[index].name}',
+                            style: kTitleStyle,
+                          ),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Text(
-                        '${_movieCastList[index].name}',
-                        style: TextStyle(color: kTextColor, fontSize: 15),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

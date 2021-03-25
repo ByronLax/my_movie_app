@@ -4,7 +4,12 @@ import '../constants.dart';
 import 'package:provider/provider.dart';
 import '../Providers/movie_provider.dart';
 
-class PageViewWidget extends StatelessWidget {
+class PageViewWidget extends StatefulWidget {
+  @override
+  _PageViewWidgetState createState() => _PageViewWidgetState();
+}
+
+class _PageViewWidgetState extends State<PageViewWidget> {
   @override
   Widget build(BuildContext context) {
     List<MovieClass> movies =

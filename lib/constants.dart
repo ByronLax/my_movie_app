@@ -8,3 +8,5 @@ const kApiKey = '134d65df73b3a736a094e603c5bb4825';
 const kTMDBImages = 'https://image.tmdb.org/t/p/w500/';
 const kTMDBPoster = 'https://image.tmdb.org/t/p/w780/';
 const kTMDBMainUrl = 'https://api.themoviedb.org';
+const kTitleStyle = TextStyle(color: kTextColor, fontSize: 12);
+const kTypeNameStyle = TextStyle(color: kTextColor, fontSize: 18);

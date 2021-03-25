@@ -21,7 +21,10 @@ class _MovieGenreWidgetsState extends State<MovieGenreWidgets> {
     return Container(
       child: Column(
         children: [
-          TrendingMoviesWidget(),
+          TrendingMoviesWidget(
+            movieList: moviesProvider.getTrendMoviesList,
+            movieTypeName: 'Trending',
+          ),
           MovieColumnTabWidget(
             typeNameText: 'Top Rated',
             future: moviesProvider.getTopRatedMovies(),
@@ -41,7 +44,7 @@ class _MovieGenreWidgetsState extends State<MovieGenreWidgets> {
             movieClassList: moviesProvider.getNowPayingMoviesList,
           ),
           MovieColumnTabWidget(
-            typeNameText: 'UpComing',
+            typeNameText: 'Upcoming',
             future: moviesProvider.getUpComingMovies(),
             itemCount: moviesProvider.getUpComingList.length,
             movieClassList: moviesProvider.getUpComingList,

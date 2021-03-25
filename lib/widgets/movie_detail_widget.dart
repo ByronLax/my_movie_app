@@ -28,7 +28,8 @@ class MovieDetailWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+            padding: EdgeInsets.symmetric(
+                vertical: size.height * .02, horizontal: size.width * .02),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,8 +49,8 @@ class MovieDetailWidget extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: 2,
-              horizontal: 10,
+              vertical: size.height * .02,
+              horizontal: size.width * .02,
             ),
             child: Row(
               children: [
@@ -65,22 +66,19 @@ class MovieDetailWidget extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: EdgeInsets.symmetric(vertical: size.height * .005),
             decoration: BoxDecoration(color: kWidgetOnEmptyColor),
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Overview',
-                  style: TextStyle(color: kTextColor, fontSize: 20),
-                ),
+                Text('Overview', style: kTypeNameStyle),
                 SizedBox(
                   height: 4,
                 ),
                 Text(
                   '$description',
-                  style: TextStyle(color: kTextColor, fontSize: 16),
+                  style: TextStyle(color: kTextColor, fontSize: 15),
                 ),
               ],
             ),

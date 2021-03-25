@@ -18,22 +18,16 @@ class MovieColumnTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      decoration: BoxDecoration(
-        color: kAccentColor,
-      ),
-      margin: EdgeInsets.symmetric(vertical: size.height * .005),
-      height: size.height * .40,
+      margin: EdgeInsets.symmetric(vertical: size.height * .001),
       child: Column(
         children: [
           Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * .02, vertical: size.height * .02),
             alignment: Alignment.centerLeft,
             width: size.width * 1,
-            height: size.height * .05,
-            child: Text(
-              typeNameText,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: kTextColor, fontSize: 18),
-            ),
+            child: Text(typeNameText,
+                textAlign: TextAlign.center, style: kTypeNameStyle),
           ),
           Container(
             height: size.height * .35,
@@ -58,46 +52,32 @@ class MovieColumnTabWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: size.height * .3,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: size.width * .005),
-                        child: FittedBox(
-                          fit: BoxFit.cover,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * .003),
-                            width: snapshot.connectionState ==
-                                    ConnectionState.waiting
-                                ? size.width * .44
-                                : null,
-                            decoration:
-                                BoxDecoration(color: kWidgetOnEmptyColor),
-                            child: Image.network(
-                                '$kTMDBImages${movieClassList[index].imageURL}',
-                                fit: BoxFit.cover),
-                          ),
+                      Expanded(
+                        child: Container(
+                          color: kWidgetOnEmptyColor,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.width * .005),
+                          child: Image.network(
+                              '$kTMDBImages${movieClassList[index].imageURL}',
+                              fit: BoxFit.cover),
                         ),
                       ),
                       Container(
                         width: size.width * .3,
-                        padding: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: size.height * .01),
                         child: movieClassList[index].title == null
                             ? Text(
                                 'Not Available',
-                                style:
-                                    TextStyle(color: kTextColor, fontSize: 15),
-                                maxLines: 1,
+                                style: kTitleStyle,
                                 overflow: TextOverflow.fade,
                               )
                             : Text(
                                 '${movieClassList[index].title}',
-                                style:
-                                    TextStyle(color: kTextColor, fontSize: 15),
+                                style: kTitleStyle,
                                 overflow: TextOverflow.fade,
                                 softWrap: false,
                               ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/constants.dart';
 import 'package:my_movie_app/models/movie_class.dart';
@@ -15,6 +14,7 @@ class ReviewsWidget extends StatefulWidget {
 class _ReviewsWidgetState extends State<ReviewsWidget> {
   List<ReviewsClass> _movieReviewList = [];
   Future getMoviesReviews() async {
+    List<ReviewsClass> movieReviewList = [];
     final url = Uri.parse(
         '$kTMDBMainUrl/3/movie/${widget.movieID}/reviews?api_key=$kApiKey');
     final response = await http.get(url);
@@ -27,8 +27,12 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
           author: reviews['author'],
           reviewContent: reviews['content'],
         );
-        _movieReviewList.add(movieReviews);
+        movieReviewList.add(movieReviews);
       }
+      List<ReviewsClass> subList = movieReviewList.sublist(0, 5);
+      setState(() {
+        _movieReviewList = subList;
+      });
     } else {
       print(response.statusCode);
     }
@@ -45,46 +49,55 @@ class _ReviewsWidgetState extends State<ReviewsWidget> {
     var size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: getMoviesReviews(),
-      builder: (context, snapshot) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 20, bottom: 10, left: 10),
-            child: Text(
-              'Reviews',
-              style: TextStyle(fontSize: 20, color: kTextColor),
+      builder: (context, snapshot) => Container(
+        margin: EdgeInsets.symmetric(vertical: size.height * .005),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(color: kAccentColor),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: size.height * .01),
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * .02, vertical: size.height * .02),
+              child: Text(
+                'Reviews',
+                style: TextStyle(fontSize: 20, color: kTextColor),
+              ),
             ),
-          ),
-          Container(
-            height: size.height * .6,
-            child: ListView.builder(
-                itemCount: _movieReviewList.length,
-                itemBuilder: (context, index) => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: kAccentColor),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${_movieReviewList[index].author}',
-                            style: TextStyle(color: kTextColor, fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            '${_movieReviewList[index].reviewContent}',
-                            style: TextStyle(color: kTextColor),
-                          ),
-                        ],
-                      ),
-                    )),
-          ),
-        ],
+            Container(
+              height: size.height * .4,
+              child: ListView.builder(
+                  itemCount: _movieReviewList.length,
+                  itemBuilder: (context, index) => Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * .02,
+                            vertical: size.height * .01),
+                        decoration: BoxDecoration(color: kAccentColor),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_movieReviewList[index].author}',
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: size.height * .005,
+                            ),
+                            Text(
+                              '${_movieReviewList[index].reviewContent}',
+                              maxLines: 10,
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(color: kTextColor),
+                            ),
+                          ],
+                        ),
+                      )),
+            ),
+          ],
+        ),
       ),
     );
   }
