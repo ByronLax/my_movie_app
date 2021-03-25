@@ -1,35 +1,54 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import '../models/movie_class.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import '../constants.dart';
+import '../models/movie_class.dart';
 
 class MoviesProvider extends ChangeNotifier {
-  // List<MovieClass> _moviesTrendingList = [];
-  // List<MovieClass> _moviesNowPlayingList = [];
-  // List<MovieClass> _moviesTopRatedList = [];
+  List<MovieClass> _moviesTrendList = [];
 
-  List<MovieClass> _moviesList = [];
-
-  List<MovieClass> get getMoviesList {
-    return [..._moviesList];
+  List<MovieClass> get getTrendMoviesList {
+    return [..._moviesTrendList];
   }
 
-  List<Map<String, String>> movieMapList = [
-    {
-      'movieType': 'Trending',
-    },
-    {
-      'movieType': 'Now Playing',
-    },
-    {
-      'movieType': 'Top Rated',
-    },
-  ];
+  List<MovieClass> _moviesNowList = [];
 
-  Future getTrendingMoviesTMDB(String middleUrl) async {
-    final url = Uri.parse('$kTMDBMainUrl$middleUrl$kApiKey');
+  List<MovieClass> get getNowMoviesList {
+    return [..._moviesNowList];
+  }
+
+  List<MovieClass> _moviesTopList = [];
+
+  List<MovieClass> get getTopMoviesList {
+    return [..._moviesTopList];
+  }
+
+  Map<String, String> movieTypeNameList = {
+    'trending': 'Trending',
+    'nowPlaying': 'Now Playing',
+    'topRated': 'Top Rated',
+  };
+
+  Future getTrendingMovies() async {
+    final url = Uri.parse('$kTMDBMainUrl/3/trending/all/day?api_key=$kApiKey');
+    final response = await http.get(url);
+    final decodedMoviesData = jsonDecode(response.body);
+    final resultMovies = decodedMoviesData['results'];
+
+    for (var movies in resultMovies) {
+      var movieTrendClass = MovieClass(
+          id: movies['id'],
+          title: movies['title'],
+          imageURL: movies['poster_path'],
+          description: movies['overview'],
+          rating: movies['vote_average'],
+          poster: movies['backdrop_path']);
+      _moviesTrendList.add(movieTrendClass);
+    }
+  }
+
+  Future getNowPlayingMovies() async {
+    final url = Uri.parse('$kTMDBMainUrl/3/movie/now_playing?api_key=$kApiKey');
     final response = await http.get(url);
     final decodedMoviesData = jsonDecode(response.body);
     final resultMovies = decodedMoviesData['results'];
@@ -42,20 +61,25 @@ class MoviesProvider extends ChangeNotifier {
           description: movies['overview'],
           rating: movies['vote_average'],
           poster: movies['backdrop_path']);
-
-      _moviesList.add(movieClass);
+      _moviesNowList.add(movieClass);
     }
-    notifyListeners();
   }
 
-  String moviesMiddleUrl(int index) {
-    if (movieMapList[index]['movieType'] == 'Trending') {
-      return '/3/trending/all/day?api_key=';
-    } else if (movieMapList[index]['movieType'] == 'Now Playing') {
-      return '/3/movie/now_playing?api_key=';
-    } else if (movieMapList[index]['movieType'] == 'Top Rated') {
-      return '/3/movie/top_rated?api_key=';
+  Future getTopRatedMovies() async {
+    final url = Uri.parse('$kTMDBMainUrl/3/movie/top_rated?api_key=$kApiKey');
+    final response = await http.get(url);
+    final decodedMoviesData = jsonDecode(response.body);
+    final resultMovies = decodedMoviesData['results'];
+
+    for (var movies in resultMovies) {
+      var movieClass = MovieClass(
+          id: movies['id'],
+          title: movies['title'],
+          imageURL: movies['poster_path'],
+          description: movies['overview'],
+          rating: movies['vote_average'],
+          poster: movies['backdrop_path']);
+      _moviesTopList.add(movieClass);
     }
-    return '';
   }
 }
